@@ -3,8 +3,9 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>3DAscii</name>
+            <name>Ascii3D</name>
             <source-roots>
+                <root id="src.AsciiPanel.dir"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>
