@@ -1,4 +1,4 @@
-package Ascii3D;
+package ascii3d;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 public class Ascii3D extends Canvas implements Runnable {
 
     private boolean running;
-    private static final int HEIGHT = 19, WIDTH = 29, SCALE = 32;
+    private static final int HEIGHT = 22, WIDTH = 35, SCALE = 32;
     private static final String NAME = "RL";
 
     public int tickCount = 0;
@@ -97,12 +97,11 @@ public class Ascii3D extends Canvas implements Runnable {
 
             if (System.currentTimeMillis() - lastTimer >= 1000) {
                 lastTimer += 1000;
-                System.out.println(frames + " " + ticks);
+                this.render();
                 frames = 0;
                 ticks = 0;
-            	screen.render();
-	    }
-
+                screen.render();
+            }
 
         }
 
@@ -110,6 +109,10 @@ public class Ascii3D extends Canvas implements Runnable {
 
     public void tick() {
         tickCount++;
+    }
+
+    public void render() {
+        System.out.println(frame.getSize().toString());
     }
 
 }

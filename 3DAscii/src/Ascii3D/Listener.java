@@ -1,4 +1,4 @@
-package Ascii3D;
+package ascii3d;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
