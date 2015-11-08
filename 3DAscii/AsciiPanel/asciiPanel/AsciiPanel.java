@@ -739,6 +739,39 @@ public class AsciiPanel extends JPanel {
         }
         return this;
     }
+    //
+    // I ADDED THIS ONE, CUSTOM METHOD w/ param Render
+    //
+    public AsciiPanel write(Render r) {
+        if (r.data == null) {
+            throw new NullPointerException("string must not be null.");
+        }
+
+        if (r.x + r.data.length() >= widthInCharacters) {
+            throw new IllegalArgumentException("x + string.length() " + (r.x + r.data.length()) + " must be less than " + widthInCharacters + ".");
+        }
+
+        if (r.x < 0 || r.x >= widthInCharacters) {
+            throw new IllegalArgumentException("x " + r.x + " must be within range [0," + widthInCharacters + ").");
+        }
+
+        if (r.y < 0 || r.y >= heightInCharacters) {
+            throw new IllegalArgumentException("y " + r.y + " must be within range [0," + heightInCharacters + ").");
+        }
+
+        if (r.foreground == null) {
+            r.foreground = defaultForegroundColor;
+        }
+
+        if (r.background == null) {
+            r.background = defaultBackgroundColor;
+        }
+
+        for (int i = 0; i < r.data.length(); i++) {
+            write(r.data.charAt(i), r.x + i, r.y, r.foreground, r.background);
+        }
+        return this;
+    }
 
     /**
      * Write a string to the center of the panel at the specified y position.

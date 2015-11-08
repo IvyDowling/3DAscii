@@ -1,6 +1,7 @@
 package ascii3d;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -41,7 +42,9 @@ public class Ascii3D extends Canvas implements Runnable {
     }
 
     public void init() {
-
+        //TEMP
+        screen.addRenderArray(ImageLib.getHallSample(Color.WHITE, Color.BLACK));
+        screen.addRenderArray(ImageLib.getWall(10, Color.WHITE, Color.BLACK));
     }
 
     public synchronized void start() {
@@ -112,7 +115,8 @@ public class Ascii3D extends Canvas implements Runnable {
     }
 
     public void render() {
-        System.out.println(frame.getSize().toString());
+        screen.render();
+        //TEMP
     }
 
 }
