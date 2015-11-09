@@ -85,10 +85,15 @@ public class ImageLib {
     }
 
     public static Render[] getWall(int width, Color fg, Color bg) {
+        if (width < 3 || width > SCREEN_WIDTH / 2) {
+            return new Render[]{
+                new Render("", 0, 0, fg, bg)
+            };
+        }
         Render[] temp = new Render[width];
         //find out where we need to start the Renders for this wall
-        int xStart = (SCREEN_WIDTH / 2 - width / 2) - 4;
-        int yStart = (SCREEN_HEIGHT / 2 - width / 2);
+        int xStart = (SCREEN_WIDTH / 2) - (width) + 1;
+        int yStart = (SCREEN_HEIGHT / 2) - (width / 2);
         //build the top line
         String line = T_L_CORNER + "";
         for (int c = 0; c < (width * 2) - 4; c++) {

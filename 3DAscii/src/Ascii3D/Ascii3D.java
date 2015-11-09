@@ -43,8 +43,6 @@ public class Ascii3D extends Canvas implements Runnable {
 
     public void init() {
         //TEMP
-        screen.addRenderArray(ImageLib.getHallSample(Color.WHITE, Color.BLACK));
-        screen.addRenderArray(ImageLib.getWall(10, Color.WHITE, Color.BLACK));
     }
 
     public synchronized void start() {
@@ -112,10 +110,11 @@ public class Ascii3D extends Canvas implements Runnable {
 
     public void tick() {
         tickCount++;
+        screen.render();
     }
 
     public void render() {
-        screen.render();
+//        screen.render();
         //TEMP
     }
 

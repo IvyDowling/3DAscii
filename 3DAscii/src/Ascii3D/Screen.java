@@ -3,6 +3,7 @@ package ascii3d;
 import asciiPanel.*;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -43,13 +44,16 @@ public class Screen extends JPanel {
         //write default renders
 //        this.updateGameUI();
         //write added renders
-        for (Render r : renderList) {
+        Render[] tempRender = new Render[renderList.size()];
+        tempRender = renderList.toArray(tempRender);
+        renderList.clear();
+        for (Render r : tempRender) {
             asciiPanel.write(r);
         }
-//        for (Animation a : animationList) {
+
+//        while () {
 //            asciiPanel.withEachTile(a.x, a.y, a.width, 1, a.transform);
 //        }
-        renderList.clear();
         this.repaint();
     }
 

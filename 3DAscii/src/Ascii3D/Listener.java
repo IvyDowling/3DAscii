@@ -11,28 +11,16 @@ public class Listener implements KeyListener {
         'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private int lastKeyPressed;
     private boolean enabled;
-    private static Screen screen;
+    private static Controller controller;
 
     public Listener() {
-        screen = Screen.getInstance();
+        controller = Controller.getInstance();
         enabled = false;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (enabled) {
-
-            char keyChar;
-            keyChar = e.getKeyChar();
-//            if (e.getKeyCode() == keys[0]) {
-//            }
-
-        } else {
-            for (int i = 0; i < alphabet.length; i++) {
-                if (e.getKeyChar() == alphabet[i]) {
-                }
-            }
-        }
+        controller.move();
     }
 
     @Override
