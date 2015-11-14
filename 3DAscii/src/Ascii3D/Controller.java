@@ -1,26 +1,68 @@
 package ascii3d;
 
-import java.awt.Color;
-
 public class Controller {
 
     private static Controller controller = new Controller();
     private static Screen screen;
-    
-    private int pers = 0;
-    
-    public void move(){
-        pers++;
-        screen.addRenderArray(ImageLib.getHallSample(Color.WHITE, Color.BLACK));
-        screen.addRenderArray(ImageLib.getWall(pers, Color.WHITE, Color.BLACK));
-    }
+    private static Perspective pers;
+    private int xInst;
+    private final int xDiff;
 
     public Controller() {
         screen = Screen.getInstance();
+        pers = Perspective.getInstance();
+
+        //number of pixels per registered turn
+        xDiff = 16;
     }
 
     public void render() {
         screen.render();
+    }
+
+    public void addRender() {
+        
+    }
+
+    private void execute(Command c) {
+        if (c != null) {
+            c.exe(getInstance());
+        }
+    }
+
+    public void setMouseValue(int x) {
+        xInst = x;
+    }
+
+    public void takeMouseMotion(int x) {
+        if (x - xDiff > xInst) {
+            //move right
+            execute(pers.lookRight());
+            xInst = x;
+        } else if (x + xDiff < xInst) {
+            //move left
+            execute(pers.lookLeft());
+            xInst = x;
+        }
+        //nothing happening!
+    }
+
+    public void takeMouseClick(int x, int y) {
+
+    }
+
+    public void takeInput(int keyCode) {
+
+        switch (keyCode) {
+            case 37://left
+                break;
+            case 38://up
+                break;
+            case 39://right
+                break;
+            case 40://down
+                break;
+        }
     }
 
     public static Controller getInstance() {

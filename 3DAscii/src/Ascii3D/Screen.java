@@ -3,7 +3,6 @@ package ascii3d;
 import asciiPanel.*;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -62,6 +61,14 @@ public class Screen extends JPanel {
             Screen screen = new Screen();
         }
         return screen;
+    }
+
+    public int getAsciiPanelWidth() {
+        return WIDTH;
+    }
+
+    public int getAsciiPanelHeight() {
+        return HEIGHT;
     }
 
     private class Animation {

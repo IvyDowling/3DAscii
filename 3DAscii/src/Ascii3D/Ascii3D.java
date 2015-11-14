@@ -1,7 +1,6 @@
 package ascii3d;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -10,13 +9,14 @@ public class Ascii3D extends Canvas implements Runnable {
 
     private boolean running;
     private static final int HEIGHT = 22, WIDTH = 35, SCALE = 32;
-    private static final String NAME = "RL";
+    private static final String NAME = "Ghostme";
 
     public int tickCount = 0;
 
     private JFrame frame;
     private Screen screen;
     private Listener listener;
+    private Mouse mouse;
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
 
     public Ascii3D() {
@@ -24,6 +24,7 @@ public class Ascii3D extends Canvas implements Runnable {
         frame = new JFrame(NAME);
         screen = Screen.getInstance();
         listener = new Listener();
+        mouse = new Mouse();
 
         //sets personal bug
         frame.setIconImage(new ImageIcon("res/bug.png").getImage());
@@ -31,6 +32,8 @@ public class Ascii3D extends Canvas implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(screen, null);
         frame.addKeyListener(listener);
+        frame.addMouseListener(mouse);
+        frame.addMouseMotionListener(mouse);
         frame.pack();
         frame.setPreferredSize(DIMENSION);
         frame.setResizable(true);

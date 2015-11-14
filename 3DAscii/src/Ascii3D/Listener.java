@@ -15,12 +15,12 @@ public class Listener implements KeyListener {
 
     public Listener() {
         controller = Controller.getInstance();
-        enabled = false;
+        enabled = true;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        controller.move();
+        controller.takeInput(e.getKeyCode());
     }
 
     @Override
