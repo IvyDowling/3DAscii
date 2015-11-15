@@ -1,5 +1,10 @@
 package ascii3d;
 
+import asciiPanel.AsciiCharacterData;
+import asciiPanel.Render;
+import java.awt.Color;
+import java.util.Random;
+
 public class Controller {
 
     private static Controller controller = new Controller();
@@ -20,14 +25,22 @@ public class Controller {
         screen.render();
     }
 
-    public void addRender() {
-        
+    public void addRender(Render[] r) {
+        screen.addRender(r);
+    }
+
+    public void addRender(Render r) {
+        screen.addRender(r);
     }
 
     private void execute(Command c) {
         if (c != null) {
             c.exe(getInstance());
         }
+    }
+
+    public void clearRenders() {
+        screen.clearRenders();
     }
 
     public void setMouseValue(int x) {
@@ -48,7 +61,8 @@ public class Controller {
     }
 
     public void takeMouseClick(int x, int y) {
-
+        screen.addRender(new Ghost().getGhostImage(60, 15));
+        screen.render();
     }
 
     public void takeInput(int keyCode) {

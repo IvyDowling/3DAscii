@@ -33,7 +33,7 @@ public class Screen extends JPanel {
         renderList.add(r);
     }
 
-    public void addRenderArray(Render[] r) {
+    public void addRender(Render[] r) {
         for (Render rn : r) {
             this.addRender(rn);
         }
@@ -43,9 +43,7 @@ public class Screen extends JPanel {
         //write default renders
 //        this.updateGameUI();
         //write added renders
-        Render[] tempRender = new Render[renderList.size()];
-        tempRender = renderList.toArray(tempRender);
-        renderList.clear();
+        Render[] tempRender = renderList.toArray(new Render[renderList.size()]);
         for (Render r : tempRender) {
             asciiPanel.write(r);
         }
@@ -54,6 +52,11 @@ public class Screen extends JPanel {
 //            asciiPanel.withEachTile(a.x, a.y, a.width, 1, a.transform);
 //        }
         this.repaint();
+    }
+    
+    public void clearRenders(){
+        renderList.clear();
+        asciiPanel.clear();
     }
 
     public static Screen getInstance() {

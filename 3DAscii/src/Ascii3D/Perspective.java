@@ -1,6 +1,10 @@
 package ascii3d;
 
 import GameMap.LocalList;
+import asciiPanel.AsciiCharacterData;
+import asciiPanel.Line;
+import java.awt.Color;
+import java.awt.Point;
 
 public class Perspective {
 
@@ -11,6 +15,13 @@ public class Perspective {
     private static Perspective pers = new Perspective(Screen.getInstance().getAsciiPanelWidth() / 2);
     private PlayerCompass pc;
 
+    /*
+     TEMP CODE
+     */
+    private AsciiCharacterData defaultData = new AsciiCharacterData('.', Color.WHITE, Color.BLUE);
+    private int temp_ref = 0;
+    //ENDE HERE
+
     public Perspective(int radius) {
         local = new LocalList(30, 5);
         layer = new Layer[radius];
@@ -19,20 +30,30 @@ public class Perspective {
     }
 
     public Command lookRight() {
-        System.out.println("Right");
+        temp_ref--;
+        if (temp_ref < 0) {
+            temp_ref = 0;
+        }
         return new Command() {
             @Override
             public void exe(Controller c) {
-                c.render();
+                c.clearRenders();
+                c.addRender(new Line(new Point(1, 1), new Point(60, temp_ref), defaultData).getRender());
             }
         };
     }
 
     public Command lookLeft() {
-        System.out.println("Left");
+        temp_ref++;
+        if (temp_ref > 30) {
+            temp_ref = 30;
+        }
         return new Command() {
             @Override
             public void exe(Controller c) {
+                c.clearRenders();
+                c.addRender(new Line(new Point(1, 1), new Point(60, temp_ref), defaultData).getRender());
+//                System.out.println(new Line(new Point(0, 0), new Point(4, 4),defaultData).toString());
             }
         };
     }
