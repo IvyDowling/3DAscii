@@ -1,9 +1,8 @@
 package ascii3d;
 
-import asciiPanel.AsciiCharacterData;
 import asciiPanel.Render;
+import asciiPanel.TileTransformer;
 import java.awt.Color;
-import java.util.Random;
 
 public class Controller {
 
@@ -16,13 +15,20 @@ public class Controller {
     public Controller() {
         screen = Screen.getInstance();
         pers = Perspective.getInstance();
-
-        //number of pixels per registered turn
+        //number of pixels per registered turn for mouse reg
         xDiff = 16;
     }
 
     public void render() {
         screen.render();
+    }
+    
+    public void addAnimation(TileTransformer t){
+        screen.addAnimation(t);
+    }
+    
+    public void addAnimation(TileTransformer[] t){
+        screen.addAnimation(t);
     }
 
     public void addRender(Render[] r) {
@@ -61,22 +67,36 @@ public class Controller {
     }
 
     public void takeMouseClick(int x, int y) {
-        screen.addRender(new Ghost().getGhostImage(60, 15));
-        screen.render();
+        screen.addRender(new Render(ImageLib.CIRCLE,12,12,Color.GREEN,Color.BLACK));
     }
 
     public void takeInput(int keyCode) {
-
         switch (keyCode) {
+            case 65://a
             case 37://left
+                execute(pers.step(Step.LEFT));
                 break;
+            case 87://w
             case 38://up
+                execute(pers.step(Step.FORWARD));
                 break;
+            case 68://d
             case 39://right
+                execute(pers.step(Step.RIGHT));
                 break;
+            case 83://s
             case 40://down
+                execute(pers.step(Step.BACK));
                 break;
         }
+    }
+    
+    public int getScreenWidth(){
+        return screen.getAsciiPanelWidth();
+    }
+    
+    public int getScreenHeight(){
+        return screen.getAsciiPanelHeight();
     }
 
     public static Controller getInstance() {

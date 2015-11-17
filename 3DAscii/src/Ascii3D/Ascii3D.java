@@ -117,8 +117,7 @@ public class Ascii3D extends Canvas implements Runnable {
     }
 
     public void render() {
-//        screen.render();
-        //TEMP
+        //1 sec
     }
 
 }

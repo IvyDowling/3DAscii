@@ -9,6 +9,24 @@ public class PlayerCompass {
         increment = incr;
     }
 
+    private void loopDegree() {
+        degree = degree % 360;
+    }
+
+    public void increment() {
+        degree = degree + increment;
+        if (degree >= 360) {
+            loopDegree();
+        }
+    }
+
+    public void decrement() {
+        degree = degree - increment;
+        if (degree >= 360) {
+            loopDegree();
+        }
+    }
+
     public int getDegree() {
         return degree;
     }
@@ -18,8 +36,9 @@ public class PlayerCompass {
     }
 
     public void setDegree(int d) {
-        if (d < 360) {
-            degree = increment * (d / increment);
+        degree = increment * (d / increment);
+        if (degree >= 360) {
+            loopDegree();
         }
     }
 }

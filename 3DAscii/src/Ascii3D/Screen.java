@@ -15,7 +15,7 @@ public class Screen extends JPanel {
     private static Screen screen = new Screen();
     private static AsciiPanel asciiPanel;
     private List<Render> renderList;
-    private List<Animation> animationList;
+    private List<TileTransformer> transformList;
 
     public Screen() {
         this.setSize(DIMENSION);
@@ -24,9 +24,19 @@ public class Screen extends JPanel {
         this.setBackground(Color.BLACK);
 
         renderList = new LinkedList<>();
-        animationList = new LinkedList<>();
+        transformList = new LinkedList<>();
         asciiPanel.setBackground(Color.BLACK);
         asciiPanel.setForeground(Color.WHITE);
+    }
+    
+    public void addAnimation(TileTransformer t){
+        transformList.add(t);
+    }
+    
+    public void addAnimation(TileTransformer[] t){
+        for (TileTransformer tile : t) {
+            this.addAnimation(tile);
+        }
     }
 
     public void addRender(Render r) {
@@ -40,17 +50,15 @@ public class Screen extends JPanel {
     }
 
     public void render() {
-        //write default renders
-//        this.updateGameUI();
-        //write added renders
         Render[] tempRender = renderList.toArray(new Render[renderList.size()]);
         for (Render r : tempRender) {
             asciiPanel.write(r);
         }
-
-//        while () {
-//            asciiPanel.withEachTile(a.x, a.y, a.width, 1, a.transform);
-//        }
+        TileTransformer[] tempTransformer = transformList.toArray(new TileTransformer[transformList.size()]);
+        transformList.clear();
+        for(TileTransformer t: tempTransformer){
+            asciiPanel.withEachTile(t);
+        }
         this.repaint();
     }
     
@@ -72,18 +80,5 @@ public class Screen extends JPanel {
 
     public int getAsciiPanelHeight() {
         return HEIGHT;
-    }
-
-    private class Animation {
-
-        public TileTransformer transform;
-        public int x, y, width;
-
-        public Animation(int x, int y, int w, TileTransformer t) {
-            this.x = x;
-            this.y = y;
-            width = w;
-            transform = t;
-        }
     }
 }
