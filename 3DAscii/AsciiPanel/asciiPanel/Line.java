@@ -4,25 +4,28 @@ import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Line {
+public class Line implements Drawable {
 
     private Point start, end;
-    private Render[] render;
+    private AsciiCharacterData[] asciiData;
 
     public Line(Point p1, Point p2, AsciiCharacterData[] d) {
-        start = p1;
-        end = p2;
+        if (p1.x < p2.x) { //'start' is the lower x val
+            start = p1;
+            end = p2;
+        } else {
+            start = p2;
+            end = p1;
+        }
         //we really want this to not happen
-        if (d.length < width()) {
+        if (d.length > 1 && d.length < width()) {
             throw new IllegalArgumentException("ascii data array is too short for the line lenght!");
         }
-        render = fillRender(d);
+        asciiData = d;
     }
 
     public Line(Point p1, Point p2, AsciiCharacterData d) {
-        start = p1;
-        end = p2;
-        render = fillRender(d);
+        this(p1, p2, new AsciiCharacterData[]{d});
     }
 
     /*
@@ -30,19 +33,37 @@ public class Line {
      */
     private Render[] fillRender(AsciiCharacterData data) {
         List<Render> temp = new LinkedList<>();
-        int dx = end.x - start.x;
-        int dy = end.y - start.y;
+        if (start.y < end.y) {
+            int dx = end.x - start.x;
+            int dy = end.y - start.y;
 
-        int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
-        temp.add(new Render(start.x, start.y, data));
-        int y = start.y;
-        int x = start.x;
-        for (int i = 1; i < end.x + 1; i++) {
-            temp.add(new Render(i, y, data));
-            dif = dif + (2 * dy);
-            if (dif > 0) {
-                y = y + 1;
-                dif = dif - (2 * dx);
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data));
+            int y = start.y;
+            int x = start.x;
+            for (int i = 1; i < end.x + 1; i++) {
+                temp.add(new Render(i, y, data));
+                dif = dif + (2 * dy);
+                if (dif > 0) {
+                    y = y + 1;
+                    dif = dif - (2 * dx);
+                }
+            }
+        } else {
+            int dx = end.x - start.x;
+            int dy = start.y - end.y;
+
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data));
+            int y = start.y;
+            int x = start.x;
+            for (int i = 1; i < end.x + 1; i++) {
+                temp.add(new Render(i, y, data));
+                dif = dif + (2 * dy);
+                if (dif > 0) {
+                    y = y - 1;
+                    dif = dif - (2 * dx);
+                }
             }
         }
         return (Render[]) temp.toArray(new Render[temp.size()]);
@@ -50,23 +71,89 @@ public class Line {
 
     private Render[] fillRender(AsciiCharacterData data[]) {
         List<Render> temp = new LinkedList<>();
-        int dx = end.x - start.x;
-        int dy = end.y - start.y;
+        if (start.y < end.y) {
+            int dx = end.x - start.x;
+            int dy = end.y - start.y;
 
-        int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
-        temp.add(new Render(start.x, start.y, data[0]));
-        int y = start.y;
-        int x = start.x;
-        for (int i = 1; i < end.x + 1; i++) {
-            temp.add(new Render(i, y, data[i]));
-            dif = dif + (2 * dy);
-            if (dif > 0) {
-                y = y + 1;
-                dif = dif - (2 * dx);
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data[0]));
+            int y = start.y;
+            int x = start.x;
+            for (int i = 1; i < end.x + 1; i++) {
+                temp.add(new Render(i, y, data[i]));
+                dif = dif + (2 * dy);
+                if (dif > 0) {
+                    y = y + 1;
+                    dif = dif - (2 * dx);
+                }
+            }
+        } else {
+            int dx = end.x - start.x;
+            int dy = start.y - end.y;
+
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data[0]));
+            int y = start.y;
+            int x = start.x;
+            for (int i = 1; i < end.x + 1; i++) {
+                temp.add(new Render(i, y, data[i]));
+                dif = dif + (2 * dy);
+                if (dif > 0) {
+                    y = y - 1;
+                    dif = dif - (2 * dx);
+                }
             }
         }
         return (Render[]) temp.toArray(new Render[temp.size()]);
     }
+
+    //we need to detect and adjust for octants
+    /*
+     pubilc Point switchFromOctantZeroTo(octant, x, y) 
+     ---switch(octant)  
+     -------case 0: return (x, y)
+     -------case 1: return (y, x)
+     -------case 6: return (y, -x)
+     -------case 7: return (x, -y)
+     Octants are flipped on y because of screens top left (0,0)
+     ..|6/
+     ..|/7
+     --+--
+     ..|\0
+     ..|1\
+     */
+    private Point adjustToOctant1(Point p) {
+        return new Point(p.y, p.x);
+    }
+
+    private Point adjustToOctant6(Point p) {
+        return new Point(p.y, -p.x);
+    }
+
+    private Point adjustToOctant7(Point p) {
+        return new Point(p.x, -p.y);
+    }
+
+    //Drawable impl
+    @Override
+    public void transform(int x, int y, AsciiCharacterData d) {
+        start.x = start.x + x;
+        start.y = start.y + y;
+        end.x = end.x + x;
+        end.y = end.y + y;
+        for (AsciiCharacterData data : asciiData) {
+            data = d;
+        }
+    }
+
+    @Override
+    public Render[] getRender() {
+        if (asciiData.length == 1) {
+            return fillRender(asciiData[0]);
+        }
+        return fillRender(asciiData);
+    }
+    //
 
     public final int width() {
         //we're always going to be using
@@ -83,10 +170,6 @@ public class Line {
             return 1;
         }
         return Math.abs(end.y - start.y) + 1;
-    }
-
-    public Render[] getRender() {
-        return render;
     }
 
     public int getStartX() {
@@ -113,12 +196,16 @@ public class Line {
         return end;
     }
 
+    public AsciiCharacterData[] getAsciiData() {
+        return asciiData;
+    }
+
     @Override
     public String toString() {
         String temp = "";
-        for (Render r : render) {
+        for (AsciiCharacterData r : asciiData) {
             if (r != null) {
-                temp += r.getAsciiCharacterData().character;
+                temp += " " + r.character + "\n";
             }
         }
         return start.toString() + " to " + end.toString() + " with data '" + temp + "'";

@@ -1,5 +1,6 @@
 package ascii3d;
 
+import asciiPanel.Drawable;
 import asciiPanel.Render;
 import asciiPanel.TileTransformer;
 import java.awt.Color;
@@ -67,7 +68,9 @@ public class Controller {
     }
 
     public void takeMouseClick(int x, int y) {
-        screen.addRender(new Render(ImageLib.CIRCLE,12,12,Color.GREEN,Color.BLACK));
+        for(Drawable d: pers.getDraw()){
+            screen.addRender(d.getRender());
+        }
     }
 
     public void takeInput(int keyCode) {

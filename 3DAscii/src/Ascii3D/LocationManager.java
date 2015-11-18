@@ -2,6 +2,10 @@ package ascii3d;
 
 import GameMap.Direction;
 import GameMap.Local;
+import asciiPanel.AsciiCharacterData;
+import asciiPanel.Drawable;
+import asciiPanel.Line;
+import java.awt.Color;
 import java.awt.Point;
 
 public class LocationManager {
@@ -24,6 +28,14 @@ public class LocationManager {
         pCompass.decrement();
     }
 
+    public Drawable[] getView() {
+        Drawable[] view = new Drawable[]{
+            new Line(new Point(0, 0), new Point(100, 39), new AsciiCharacterData('\\', Color.WHITE, Color.BLACK)),
+            new Line(new Point(0, 39), new Point(100, 0), new AsciiCharacterData('/', Color.WHITE, Color.BLACK))
+        };
+        return view;
+    }
+
     public boolean step(Step s) { //return if can step
         //first we're going to get our relative facing direction
         Direction facing = this.netDirection(pCompass.getDegree());
@@ -44,8 +56,34 @@ public class LocationManager {
         }
         //now, with our intented direction found
         //we can figure out if we can manage that on the map
-        
-        return true;
+        //rooms are defined by their bottom left corner
+        switch (facing) {
+            case NORTH:
+                if (currentLocation.y + 1 < localMap.getCurrentNode().getYSize()) {
+                    currentLocation.y = currentLocation.y + 1;
+                    return true;
+                }
+                return false;
+            case EAST:
+                if (currentLocation.x + 1 < localMap.getCurrentNode().getXSize()) {
+                    currentLocation.x = currentLocation.x + 1;
+                    return true;
+                }
+                return false;
+            case SOUTH:
+                if (currentLocation.y - 1 > 0) {
+                    currentLocation.y = currentLocation.y - 1;
+                    return true;
+                }
+                return false;
+            case WEST:
+                if (currentLocation.x + 1 > 0) {
+                    currentLocation.x = currentLocation.x - 1;
+                    return true;
+                }
+                return false;
+        }
+        return false;
     }
 
     private Direction netDirection(int deg) {

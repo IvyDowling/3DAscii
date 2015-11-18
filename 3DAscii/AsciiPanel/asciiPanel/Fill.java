@@ -2,7 +2,7 @@ package asciiPanel;
 
 import java.awt.Point;
 
-public class Fill {
+public class Fill implements Drawable{
 
     private Render[] fill;
 
@@ -18,5 +18,15 @@ public class Fill {
 
     public Render[] getFill() {
         return fill;
+    }
+
+    @Override
+    public Render[] getRender() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void transform(int x, int y, AsciiCharacterData d) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
