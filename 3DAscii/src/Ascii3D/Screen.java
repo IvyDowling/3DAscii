@@ -3,6 +3,7 @@ package ascii3d;
 import asciiPanel.*;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -28,12 +29,12 @@ public class Screen extends JPanel {
         asciiPanel.setBackground(Color.BLACK);
         asciiPanel.setForeground(Color.WHITE);
     }
-    
-    public void addAnimation(TileTransformer t){
+
+    public void addAnimation(TileTransformer t) {
         transformList.add(t);
     }
-    
-    public void addAnimation(TileTransformer[] t){
+
+    public void addAnimation(TileTransformer[] t) {
         for (TileTransformer tile : t) {
             this.addAnimation(tile);
         }
@@ -56,13 +57,17 @@ public class Screen extends JPanel {
         }
         TileTransformer[] tempTransformer = transformList.toArray(new TileTransformer[transformList.size()]);
         transformList.clear();
-        for(TileTransformer t: tempTransformer){
+        for (TileTransformer t : tempTransformer) {
             asciiPanel.withEachTile(t);
         }
         this.repaint();
     }
-    
-    public void clearRenders(){
+
+    public Point getMousePosition() {
+        return asciiPanel.getMousePosition();
+    }
+
+    public void clearRenders() {
         renderList.clear();
         asciiPanel.clear();
     }

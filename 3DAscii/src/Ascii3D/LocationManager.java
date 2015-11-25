@@ -30,8 +30,8 @@ public class LocationManager {
 
     public Drawable[] getView() {
         Drawable[] view = new Drawable[]{
-            new Line(new Point(0, 0), new Point(100, 39), new AsciiCharacterData('\\', Color.WHITE, Color.BLACK)),
-            new Line(new Point(0, 39), new Point(100, 0), new AsciiCharacterData('/', Color.WHITE, Color.BLACK))
+            new Line(new Point(3, 3), new Point(100, 39), new AsciiCharacterData('\\', Color.WHITE, Color.BLACK)),
+            new Line(new Point(10, 39), new Point(100, 0), new AsciiCharacterData('/', Color.WHITE, Color.BLACK))
         };
         return view;
     }

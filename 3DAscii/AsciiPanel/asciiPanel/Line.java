@@ -30,110 +30,118 @@ public class Line implements Drawable {
 
     /*
      we're using Bresenham's line algorithm:
-     */
-    private Render[] fillRender(AsciiCharacterData data) {
-        List<Render> temp = new LinkedList<>();
-        if (start.y < end.y) {
-            int dx = end.x - start.x;
-            int dy = end.y - start.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
-            temp.add(new Render(start.x, start.y, data));
-            int y = start.y;
-            int x = start.x;
-            for (int i = 1; i < end.x + 1; i++) {
-                temp.add(new Render(i, y, data));
-                dif = dif + (2 * dy);
-                if (dif > 0) {
-                    y = y + 1;
-                    dif = dif - (2 * dx);
-                }
-            }
-        } else {
-            int dx = end.x - start.x;
-            int dy = start.y - end.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
-            temp.add(new Render(start.x, start.y, data));
-            int y = start.y;
-            int x = start.x;
-            for (int i = 1; i < end.x + 1; i++) {
-                temp.add(new Render(i, y, data));
-                dif = dif + (2 * dy);
-                if (dif > 0) {
-                    y = y - 1;
-                    dif = dif - (2 * dx);
-                }
-            }
-        }
-        return (Render[]) temp.toArray(new Render[temp.size()]);
-    }
-
-    private Render[] fillRender(AsciiCharacterData data[]) {
-        List<Render> temp = new LinkedList<>();
-        if (start.y < end.y) {
-            int dx = end.x - start.x;
-            int dy = end.y - start.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
-            temp.add(new Render(start.x, start.y, data[0]));
-            int y = start.y;
-            int x = start.x;
-            for (int i = 1; i < end.x + 1; i++) {
-                temp.add(new Render(i, y, data[i]));
-                dif = dif + (2 * dy);
-                if (dif > 0) {
-                    y = y + 1;
-                    dif = dif - (2 * dx);
-                }
-            }
-        } else {
-            int dx = end.x - start.x;
-            int dy = start.y - end.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
-            temp.add(new Render(start.x, start.y, data[0]));
-            int y = start.y;
-            int x = start.x;
-            for (int i = 1; i < end.x + 1; i++) {
-                temp.add(new Render(i, y, data[i]));
-                dif = dif + (2 * dy);
-                if (dif > 0) {
-                    y = y - 1;
-                    dif = dif - (2 * dx);
-                }
-            }
-        }
-        return (Render[]) temp.toArray(new Render[temp.size()]);
-    }
-
-    //we need to detect and adjust for octants
-    /*
+     we need to detect and adjust for octants
      pubilc Point switchFromOctantZeroTo(octant, x, y) 
      ---switch(octant)  
      -------case 0: return (x, y)
      -------case 1: return (y, x)
      -------case 6: return (y, -x)
      -------case 7: return (x, -y)
-     Octants are flipped on y because of screens top left (0,0)
-     ..|6/
-     ..|/7
-     --+--
+     Octants are flipped on y because of screens top left (0,0) so we have to
+        work pretty hard to get the axis to work.
+     ..|6/ this is the adjusted octant range
+     ..|/7 so when a line has the (slope > -1) it will appear reflected over y
+     --+-- and look like a line with (slope > 1) on a standard plane
      ..|\0
      ..|1\
      */
-    private Point adjustToOctant1(Point p) {
-        return new Point(p.y, p.x);
+    private Render[] fillRender(Point p1, Point p2, AsciiCharacterData[] data) {
+        List<Render> temp = new LinkedList<>();
+        double slope = getSlope(start, end);
+        if (slope == 0) {
+            System.out.println("slope = 0");
+            //the line is straight, either vertical or horizontal
+            if (start.y == end.y) {
+                //horiz
+                for (int i = start.x; i < end.x; i++) {
+                    temp.add(new Render(i, start.y, data[i % data.length]));
+                }
+            } else {
+                //vert
+                for (int i = start.y; i < end.y; i++) {
+                    temp.add(new Render(start.x, i, data[i % data.length]));
+                }
+            }
+        } else if (slope > 1) { //good
+            System.out.println("slope > 1");
+            int dx = end.x - start.x;
+            int dy = end.y - start.y;
+
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data[0]));
+            int y = start.y;
+            int x = start.x;
+            for (int i = y; i < end.y + 1; i++) {
+                temp.add(new Render(x, i, data[i % data.length]));
+                dif = dif + (2 * dx);
+                if (dif > 0) {
+                    x = x + 1;
+                    dif = dif - (2 * dy);
+                }
+            }
+        } else if (slope > 0) { //good
+            System.out.println("slope > 0");
+            int dx = end.x - start.x;
+            int dy = end.y - start.y;
+
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data[0]));
+            int y = start.y;
+            int x = start.x;
+            for (int i = x; i < end.x + 1; i++) {
+                temp.add(new Render(i, y, data[i % data.length]));
+                dif = dif + (2 * dy);
+                if (dif > 0) {
+                    y = y + 1;
+                    dif = dif - (2 * dx);
+                }
+            }
+        }  else if (slope < -1) {
+            System.out.println("slope < -1");
+            int dx = start.x - end.x;
+            int dy = start.y - end.y;
+
+            int dif = 2 * dx - dy; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(end.x, end.y, data[0]));
+            int y = end.y;
+            int x = end.x;
+            for (int i = y - 1; i > start.y; i--) {
+                temp.add(new Render(x, i, data[i % data.length]));
+                dif = dif + (2 * dy);
+                if (dif > 0) {
+                    x = x - 1;
+                    dif = dif - (2 * dx);
+                }
+            }
+        } else if (slope < 0) { // good
+            System.out.println("slope < 0");
+            int dx = end.x - start.x;
+            int dy = start.y - end.y;
+
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data[0]));
+            int y = start.y;
+            int x = start.x;
+            for (int i = x; i < end.x + 1; i++) {
+                temp.add(new Render(i, y, data[i % data.length]));
+                dif = dif + (2 * dy);
+                if (dif > 0) {
+                    y = y - 1;
+                    dif = dif - (2 * dx);
+                }
+            }
+        }
+        return (Render[]) temp.toArray(new Render[temp.size()]);
     }
 
-    private Point adjustToOctant6(Point p) {
-        return new Point(p.y, -p.x);
+    public double getSlope(Point p1, Point p2) {
+        if (p1.x == p2.x || p1.y == p2.y) {
+            return 0;
+        }
+        return ((double) p2.y - p1.y) / ((double) p2.x - p1.x);
     }
 
-    private Point adjustToOctant7(Point p) {
-        return new Point(p.x, -p.y);
-    }
-
+    
     //Drawable impl
     @Override
     public void transform(int x, int y, AsciiCharacterData d) {
@@ -148,12 +156,9 @@ public class Line implements Drawable {
 
     @Override
     public Render[] getRender() {
-        if (asciiData.length == 1) {
-            return fillRender(asciiData[0]);
-        }
-        return fillRender(asciiData);
+        return fillRender(start, end, asciiData);
     }
-    //
+    //drawable
 
     public final int width() {
         //we're always going to be using

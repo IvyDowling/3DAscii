@@ -1,9 +1,12 @@
 package ascii3d;
 
+import asciiPanel.AsciiCharacterData;
 import asciiPanel.Drawable;
+import asciiPanel.Line;
 import asciiPanel.Render;
 import asciiPanel.TileTransformer;
 import java.awt.Color;
+import java.awt.Point;
 
 public class Controller {
 
@@ -23,12 +26,12 @@ public class Controller {
     public void render() {
         screen.render();
     }
-    
-    public void addAnimation(TileTransformer t){
+
+    public void addAnimation(TileTransformer t) {
         screen.addAnimation(t);
     }
-    
-    public void addAnimation(TileTransformer[] t){
+
+    public void addAnimation(TileTransformer[] t) {
         screen.addAnimation(t);
     }
 
@@ -67,9 +70,14 @@ public class Controller {
         //nothing happening!
     }
 
+    int temporary = 0;
     public void takeMouseClick(int x, int y) {
-        for(Drawable d: pers.getDraw()){
-            screen.addRender(d.getRender());
+        screen.clearRenders();
+        screen.addRender(new Line(new Point(10, 14), new Point(50, temporary), new AsciiCharacterData(ImageLib.B_R_CORNER, Color.GREEN, Color.BLACK)).getRender());
+        screen.addRender(new Line(new Point(71, 14), new Point(75, temporary), new AsciiCharacterData(ImageLib.DARK_SHADE, Color.CYAN, Color.BLACK)).getRender());
+        temporary++;
+        if (temporary == 40) {
+            temporary = 0;
         }
     }
 
@@ -93,12 +101,12 @@ public class Controller {
                 break;
         }
     }
-    
-    public int getScreenWidth(){
+
+    public int getScreenWidth() {
         return screen.getAsciiPanelWidth();
     }
-    
-    public int getScreenHeight(){
+
+    public int getScreenHeight() {
         return screen.getAsciiPanelHeight();
     }
 
