@@ -51,14 +51,18 @@ public class Screen extends JPanel {
     }
 
     public void render() {
-        Render[] tempRender = renderList.toArray(new Render[renderList.size()]);
-        for (Render r : tempRender) {
-            asciiPanel.write(r);
+        if (!renderList.isEmpty()) {
+            Render[] tempRender = renderList.toArray(new Render[renderList.size()]);
+            for (Render r : tempRender) {
+                asciiPanel.write(r);
+            }
         }
-        TileTransformer[] tempTransformer = transformList.toArray(new TileTransformer[transformList.size()]);
-        transformList.clear();
-        for (TileTransformer t : tempTransformer) {
-            asciiPanel.withEachTile(t);
+        if (!transformList.isEmpty()) {
+            TileTransformer[] tempTransformer = transformList.toArray(new TileTransformer[transformList.size()]);
+            transformList.clear();
+            for (TileTransformer t : tempTransformer) {
+                asciiPanel.withEachTile(t);
+            }
         }
         this.repaint();
     }

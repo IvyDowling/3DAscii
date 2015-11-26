@@ -38,7 +38,7 @@ public class Line implements Drawable {
      -------case 6: return (y, -x)
      -------case 7: return (x, -y)
      Octants are flipped on y because of screens top left (0,0) so we have to
-        work pretty hard to get the axis to work.
+     work pretty hard to get the axis to work.
      ..|6/ this is the adjusted octant range
      ..|/7 so when a line has the (slope > -1) it will appear reflected over y
      --+-- and look like a line with (slope > 1) on a standard plane
@@ -49,7 +49,6 @@ public class Line implements Drawable {
         List<Render> temp = new LinkedList<>();
         double slope = getSlope(start, end);
         if (slope == 0) {
-            System.out.println("slope = 0");
             //the line is straight, either vertical or horizontal
             if (start.y == end.y) {
                 //horiz
@@ -62,8 +61,7 @@ public class Line implements Drawable {
                     temp.add(new Render(start.x, i, data[i % data.length]));
                 }
             }
-        } else if (slope > 1) { //good
-            System.out.println("slope > 1");
+        } else if (slope > 1) {
             int dx = end.x - start.x;
             int dy = end.y - start.y;
 
@@ -79,7 +77,7 @@ public class Line implements Drawable {
                     dif = dif - (2 * dy);
                 }
             }
-        } else if (slope > 0) { //good
+        } else if (slope > 0) {
             System.out.println("slope > 0");
             int dx = end.x - start.x;
             int dy = end.y - start.y;
@@ -96,24 +94,23 @@ public class Line implements Drawable {
                     dif = dif - (2 * dx);
                 }
             }
-        }  else if (slope < -1) {
-            System.out.println("slope < -1");
-            int dx = start.x - end.x;
+        } else if (slope < -1) {
+            int dx = end.x - start.x;
             int dy = start.y - end.y;
 
-            int dif = 2 * dx - dy; // using '2 *()' to eliminate a 1/2 in original formula
-            temp.add(new Render(end.x, end.y, data[0]));
-            int y = end.y;
-            int x = end.x;
-            for (int i = y - 1; i > start.y; i--) {
+            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            temp.add(new Render(start.x, start.y, data[0]));
+            int y = start.y;
+            int x = start.x;
+            for (int i = y; i > end.y + 1; i--) {
                 temp.add(new Render(x, i, data[i % data.length]));
-                dif = dif + (2 * dy);
+                dif = dif + (2 * dx);
                 if (dif > 0) {
-                    x = x - 1;
-                    dif = dif - (2 * dx);
+                    x = x + 1;
+                    dif = dif - (2 * dy);
                 }
             }
-        } else if (slope < 0) { // good
+        } else if (slope < 0) {
             System.out.println("slope < 0");
             int dx = end.x - start.x;
             int dy = start.y - end.y;
@@ -141,7 +138,6 @@ public class Line implements Drawable {
         return ((double) p2.y - p1.y) / ((double) p2.x - p1.x);
     }
 
-    
     //Drawable impl
     @Override
     public void transform(int x, int y, AsciiCharacterData d) {
