@@ -15,7 +15,7 @@ public class Screen extends JPanel {
     private static final int STARTING_HEIGHT = 75, STARTING_WIDTH = 80;
     private static Screen screen = new Screen();
     private static AsciiPanel asciiPanel;
-    private List<Render> renderList;
+    private List<Drawable> drawList;
     private List<TileTransformer> transformList;
 
     public Screen() {
@@ -24,7 +24,7 @@ public class Screen extends JPanel {
         this.add(asciiPanel = new AsciiPanel(WIDTH, HEIGHT));
         this.setBackground(Color.BLACK);
 
-        renderList = new LinkedList<>();
+        drawList = new LinkedList<>();
         transformList = new LinkedList<>();
         asciiPanel.setBackground(Color.BLACK);
         asciiPanel.setForeground(Color.WHITE);
@@ -40,21 +40,23 @@ public class Screen extends JPanel {
         }
     }
 
-    public void addRender(Render r) {
-        renderList.add(r);
+    public void addDraw(Drawable d) {
+        drawList.add(d);
     }
 
-    public void addRender(Render[] r) {
-        for (Render rn : r) {
-            this.addRender(rn);
+    public void addDraw(Drawable[] d) {
+        for (Drawable draw : d) {
+            this.addDraw(draw);
         }
     }
 
     public void render() {
-        if (!renderList.isEmpty()) {
-            Render[] tempRender = renderList.toArray(new Render[renderList.size()]);
-            for (Render r : tempRender) {
-                asciiPanel.write(r);
+        if (!drawList.isEmpty()) {
+            Drawable[] tempDraw = drawList.toArray(new Drawable[drawList.size()]);
+            for (Drawable draw : tempDraw) {
+                for (Render r : draw.getRender()) {
+                    asciiPanel.write(r);
+                }
             }
         }
         if (!transformList.isEmpty()) {
@@ -72,7 +74,7 @@ public class Screen extends JPanel {
     }
 
     public void clearRenders() {
-        renderList.clear();
+        drawList.clear();
         asciiPanel.clear();
     }
 

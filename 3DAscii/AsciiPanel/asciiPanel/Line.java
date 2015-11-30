@@ -64,8 +64,8 @@ public class Line implements Drawable {
         } else if (slope > 1) {
             int dx = end.x - start.x;
             int dy = end.y - start.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            // using '2 *()' to eliminate a 1/2 in original formula
+            int dif = 2 * dy - dx; 
             temp.add(new Render(start.x, start.y, data[0]));
             int y = start.y;
             int x = start.x;
@@ -78,11 +78,10 @@ public class Line implements Drawable {
                 }
             }
         } else if (slope > 0) {
-            System.out.println("slope > 0");
             int dx = end.x - start.x;
             int dy = end.y - start.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            // using '2 *()' to eliminate a 1/2 in original formula
+            int dif = 2 * dy - dx; 
             temp.add(new Render(start.x, start.y, data[0]));
             int y = start.y;
             int x = start.x;
@@ -97,8 +96,8 @@ public class Line implements Drawable {
         } else if (slope < -1) {
             int dx = end.x - start.x;
             int dy = start.y - end.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            // using '2 *()' to eliminate a 1/2 in original formula
+            int dif = 2 * dy - dx; 
             temp.add(new Render(start.x, start.y, data[0]));
             int y = start.y;
             int x = start.x;
@@ -111,11 +110,10 @@ public class Line implements Drawable {
                 }
             }
         } else if (slope < 0) {
-            System.out.println("slope < 0");
             int dx = end.x - start.x;
             int dy = start.y - end.y;
-
-            int dif = 2 * dy - dx; // using '2 *()' to eliminate a 1/2 in original formula
+            // using '2 *()' to eliminate a 1/2 in original formula
+            int dif = 2 * dy - dx; 
             temp.add(new Render(start.x, start.y, data[0]));
             int y = start.y;
             int x = start.x;

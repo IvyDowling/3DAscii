@@ -4,11 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/ascii3d/Perspective.java</file>
-            <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/AsciiPanel/asciiPanel/Line.java</file>
+            <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/ascii3d/Ascii3D.java</file>
+            <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/GameMap/Local.java</file>
             <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/ascii3d/Mouse.java</file>
             <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/ascii3d/Controller.java</file>
-            <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/ascii3d/LocationManager.java</file>
             <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/ascii3d/Screen.java</file>
+            <file>file:/C:/Users/IV/Desktop/GitHubSync/3DAscii/3DAscii/src/ascii3d/LocationManager.java</file>
         </group>
     </open-files>
 </project-private>

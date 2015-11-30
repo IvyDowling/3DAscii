@@ -2,9 +2,7 @@ package ascii3d;
 
 import asciiPanel.AsciiCharacterData;
 import asciiPanel.Drawable;
-import asciiPanel.Line;
 import asciiPanel.TileTransformer;
-import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,8 +19,8 @@ public class Perspective {
         locManager = new LocationManager();
         draws = new LinkedList<>();
     }
-    
-    public Drawable[] getDraw(){
+
+    public Drawable[] getDraw() {
         return locManager.getView();
     }
 
@@ -32,7 +30,7 @@ public class Perspective {
             @Override
             public void exe(Controller c) {
                 //redraw
-
+                c.addDraw(locManager.getView());
             }
         };
     }
@@ -43,7 +41,7 @@ public class Perspective {
             @Override
             public void exe(Controller c) {
                 //redraw
-
+                c.addDraw(locManager.getView());
             }
         };
     }
@@ -57,6 +55,7 @@ public class Perspective {
                         @Override
                         public void exe(Controller c) {
                             //zoom in
+                            c.addDraw(locManager.getView());
                         }
                     };
                 case BACK:
@@ -64,6 +63,7 @@ public class Perspective {
                         @Override
                         public void exe(Controller c) {
                             //zoom out
+                            c.addDraw(locManager.getView());
                         }
                     };
                 case RIGHT:
@@ -71,12 +71,7 @@ public class Perspective {
                         @Override
                         public void exe(Controller c) {
                             //slide left
-                            c.addAnimation(new TileTransformer(){
-                                @Override
-                                public void transformTile(int x, int y, AsciiCharacterData data) {
-                                    
-                                }
-                            });
+                            c.addDraw(locManager.getView());
                         }
                     };
                 case LEFT:
@@ -84,6 +79,7 @@ public class Perspective {
                         @Override
                         public void exe(Controller c) {
                             //slide right
+                            c.addDraw(locManager.getView());
                         }
                     };
             }

@@ -1,12 +1,7 @@
 package ascii3d;
 
-import asciiPanel.AsciiCharacterData;
 import asciiPanel.Drawable;
-import asciiPanel.Line;
-import asciiPanel.Render;
 import asciiPanel.TileTransformer;
-import java.awt.Color;
-import java.awt.Point;
 
 public class Controller {
 
@@ -35,12 +30,12 @@ public class Controller {
         screen.addAnimation(t);
     }
 
-    public void addRender(Render[] r) {
-        screen.addRender(r);
+    public void addDraw(Drawable[] r) {
+        screen.addDraw(r);
     }
 
-    public void addRender(Render r) {
-        screen.addRender(r);
+    public void addDraw(Drawable r) {
+        screen.addDraw(r);
     }
 
     private void execute(Command c) {
@@ -70,15 +65,8 @@ public class Controller {
         //nothing happening!
     }
 
-    int temporary = 0;
     public void takeMouseClick(int x, int y) {
-        screen.clearRenders();
-        screen.addRender(new Line(new Point(10, 14), new Point(50, temporary), new AsciiCharacterData(ImageLib.B_R_CORNER, Color.GREEN, Color.BLACK)).getRender());
-        screen.addRender(new Line(new Point(71, 14), new Point(75, temporary), new AsciiCharacterData(ImageLib.DARK_SHADE, Color.CYAN, Color.BLACK)).getRender());
-        temporary++;
-        if (temporary == 40) {
-            temporary = 0;
-        }
+        
     }
 
     public void takeInput(int keyCode) {
